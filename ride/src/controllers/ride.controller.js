@@ -12,5 +12,15 @@ const createRide = async (res, req) => {
     publishToQueue('new-ride', JSON.stringify(newRide));
     res.send(newRide);
 }
-
-export default createRide
+const acceptRide = async (req, res) => {
+    const {rideId} = req.params;
+    const ride =  await rideModel.findById(rideId)
+    if(!ride){
+            return res.status(400).json({message : 'Ride Not found'})
+    }
+    ride.status = 'accepted';
+    await ride.save();
+    publishToQueue("ride-accepted", JSON.stringify(ride))
+    res.send(ride);
+}
+export {createRide, acceptRide}
