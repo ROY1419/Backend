@@ -3,15 +3,16 @@ import express, { json, urlencoded } from 'express';
 const application = express();
 import cookieParser from 'cookie-parser';
 import rideRoutes from '../src/router/ride.route.js'
-// import { connect as _connect } from './service/rabbit';
-import rabbit from './service/rabbit.js';
+
+
 import dotenv from 'dotenv'
+import { connect } from '../src/service/rabbit.js';
 
 
 dotenv.config({
     path:'./.env'
 })
-rabbit.connect()
+connect()
 application.use(json());
 application.use(urlencoded({ extended: true }));
 application.use(cookieParser());
